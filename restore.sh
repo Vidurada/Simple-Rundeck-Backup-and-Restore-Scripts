@@ -41,10 +41,14 @@ for entry in "/home/ec2-user/rundeckBackup"/*; do
     if [[ -d $entry ]]; then
         bk_folder=$( basename $entry  )
         if [[ $bk_folder != 'Projects' ]]; then
-                sudo cp -r /home/ec2-user/rundeckBackup/$bk_folder /var/lib/rundeck/$bk_folder
+                sudo rm -rf /var/lib/rundeck/$bk_folder
+                sudo cp -r /home/ec2-user/rundeckBackup/$bk_folder /var/lib/rundeck/
         fi
     fi
 done
+
+#restore gmail api
+sudo cp /home/ec2-user/rundeckBackup/gmailApiCredentials.json /var/lib/rundeck/weekly-mail/gmailApiCredentials.json
 
 #replace the realm.properties file
 sudo rm -rf /etc/rundeck/realm.properties
@@ -73,6 +77,7 @@ make altinstall
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 sudo python get-pip.py
 
+#install required dependencies from requirements file
 cd /home/ec2-user/rundeckBackup/
 filename="requirements.txt"
 while read -r line; do

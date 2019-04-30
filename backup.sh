@@ -2,7 +2,7 @@
 
 cd ~
 
-#the projects that should be backed up
+#the projects that should be back up
 declare -a projects=("DAILY-OPERATIONS" "testing01")
 #the folders needed to back up
 declare -a folders=("data" "logs")
@@ -31,6 +31,9 @@ done
 #back up realm.properties file. This file contains information of rundeck users
 sudo cp /etc/rundeck/realm.properties rundeckBackup/
 sudo chmod 777 rundeckBackup/realm.properties
+
+#backup gmailApiCredentials to S3
+sudo cp /var/lib/rundeck/weekly-mail/gmailApiCredentials.json rundeckBackup/
 
 #upload the files to s3 bucket
 aws s3 sync ~/rundeckBackup s3://ust-rundeck-backup/rundeckBackup
