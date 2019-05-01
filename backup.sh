@@ -2,15 +2,16 @@
 
 cd ~
 
-#the projects that should be back up
+#the projects that should be back up. To add more projects add their names in the list
 declare -a projects=("DAILY-OPERATIONS" "testing01")
-#the folders needed to back up
+#the folders needed to back up. To add more config folders add their names in the list
 declare -a folders=("data" "logs")
 
 #find if there any previous backup and delete
 if [ -d "rundeckBackup" ]; then
       rm -rf ~/rundeckBackup
-      echo "Delete the previous backup"
+      echo "Previous Backup Detected"
+      echo "Previous Backup Deleted"
 fi
 
 #backup the projects
@@ -24,7 +25,7 @@ done
 #backup folders
 for i in "${folders[@]}"
 do
-  cp -r /var/lib/rundeck/$i rundeckBackup/$i
+  cp -rp /var/lib/rundeck/$i rundeckBackup/$i
   echo "$i backed up in rundeckBackup/$1"
 done
 
