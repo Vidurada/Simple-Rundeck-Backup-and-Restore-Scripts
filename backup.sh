@@ -25,7 +25,7 @@ done
 #backup folders
 for i in "${folders[@]}"
 do
-  cp -rp /var/lib/rundeck/$i rundeckBackup/$i
+  cp -rpa /var/lib/rundeck/$i rundeckBackup/$i
   echo "$i backed up in rundeckBackup/$1"
 done
 
@@ -35,6 +35,7 @@ sudo chmod 777 rundeckBackup/realm.properties
 
 #backup gmailApiCredentials to S3
 sudo cp /var/lib/rundeck/weekly-mail/gmailApiCredentials.json rundeckBackup/
+sudo cp /var/lib/rundeck/DAYSTAT-UPDATE/Quickstart-671a324109fa.json rundeckBackup/
 
 #upload the files to s3 bucket
 aws s3 sync ~/rundeckBackup s3://ust-rundeck-backup/rundeckBackup

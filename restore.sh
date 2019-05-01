@@ -56,11 +56,17 @@ done
 echo "All the config folders are restored" >> /home/ec2-user/install_status.txt
 
 #restore gmail api
-sudo cp -p /home/ec2-user/rundeckBackup/gmailApiCredentials.json /var/lib/rundeck/weekly-mail/gmailApiCredentials.json
+sudo mkdir /var/lib/rundeck/weekly-mail/
+sudo cp -p /home/ec2-user/rundeckBackup/gmailApiCredentials.json /var/lib/rundeck/weekly-mail/
+sudo mkdir /var/lib/rundeck/DAYSTAT-UPDATE/
+sudo cp -p /home/ec2-user/rundeckBackup/Quickstart-671a324109fa.json /var/lib/rundeck/DAYSTAT-UPDATE/
 
 #replace the realm.properties file
 sudo rm -rf /etc/rundeck/realm.properties
 sudo cp -p /home/ec2-user/rundeckBackup/realm.properties /etc/rundeck/realm.properties
+
+#change ownership of files
+sudo chown -R rundeck:rundeck /var/lib/rundeck
 
 sudo /etc/init.d/rundeckd start
 
@@ -79,12 +85,17 @@ done
 echo "Projects restored" >> /home/ec2-user/install_status.txt
 
 #install python3 and pip
-wget -P /home/ec2-user/ https://www.python.org/ftp/python/3.6.0/
+sudo yum groupinstall "Development Tools" -y
+sudo yum install gcc*
+sudo yum install glibc-headers.x86_64 0:2.17-260.el7_6.4
+sudo yum install zlib*
+wget -P /home/ec2-user/ https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz
 tar xf /home/ec2-user/Python-3.*
+sudo rm -rf Python-3.7.0.tar.xz
 cd /home/ec2-user/Python-3.*
 ./configure
-make
-make altinstall
+sudo make
+sudo make altinstall
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 sudo python get-pip.py
 
