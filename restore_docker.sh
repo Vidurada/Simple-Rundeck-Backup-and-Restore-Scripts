@@ -16,7 +16,7 @@ sudo systemctl start docker
 mkdir /home/ec2-user/DockerBackup
 aws s3 cp s3://viduras-test-bucket/DockerBackup /home/ec2-user/DockerBackup --recursive
 
-sudo docker login --username vidurada --password vidura@93
+sudo docker login --username <username> --password <password>   #add valid username and password here
 my_ip=$( curl http://checkip.amazonaws.com )
 sudo docker create --name ust-rundeck -v /home/ec2-user/DockerBackup/Data:/home/rundeck/server/data -v /home/ec2-user/DockerBackup/logs:/home/rundeck/var/logs -v /home/ec2-user/DockerBackup/api:/home/rundeck/etc/api -p 4440:4440 -e RUNDECK_GRAILS_URL=http://$my_ip:4440 vidurada/rundeck:1.0
 sudo docker start ust-rundeck
